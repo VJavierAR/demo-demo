@@ -18,7 +18,7 @@ class servicios_gnsys(models.Model):
     _name = 'servicios'
     _inherit = 'mail.thread'
     _description = 'Servicios GNSYS'
-    
+    """
     name=fields.Char('Nombre')
     productos = fields.One2many('product.product', 'servicio', string="Productos")
     fechaDeInicioDeServicio = fields.Datetime(string = 'Fecha de inicio de servicio',track_visibility='onchange')
@@ -59,6 +59,7 @@ class servicios_gnsys(models.Model):
     totalRetencion=fields.Text(string="Total con retencion")
     nivelfactu=fields.Text(string="Nivel de facturación")
     codigosg=fields.Text(string="codigo texto")
+    """
 
     
     
@@ -68,7 +69,7 @@ class servicios_gnsys(models.Model):
     
     
     
-    
+    """
     servActivo = fields.Boolean( string="Activo")
     #fecha = fields.Datetime(string = 'Fecha de facturación',track_visibility='onchange')
     diaCorte = fields.Integer(string="Día de corte",default='28',track_visibility='onchange')
@@ -88,7 +89,8 @@ class servicios_gnsys(models.Model):
     def cambiarNombre(self):
         if self.serviciosNombre:            
             self.nombreAnte=str(self.serviciosNombre)
-    
+    """
+    """
     @api.multi
     def crear_solicitud_arrendamineto(self):
         for record in self:            
@@ -171,7 +173,7 @@ class equipo_series(models.Model):
 
 
 
-
+"""
 class contratos(models.Model):
     _name = "contrato"
     _description = 'Contratos GNSYS'
@@ -270,152 +272,3 @@ class contratos(models.Model):
         return contrato            
 
 
-    @api.onchange('cliente')
-    def cambiarRazonSocial(self):
-        valores = [('0', 'DOCUMENTO INTEGRAL CORPORATIVO, SA DE CV'), ('1', 'GN SYS CORPORATIVO S.A. DE C.V.'),
-               ('2', 'GRUPO GNSYS SOLUCIONES SA DE CV'), ('3', 'SERVICIOS CORPORATIVOS GENESIS, S.A DE C.V.')]
-        #serviciosTodos = fields.Many2one('res.partner', string='Cliente')
-        # serviciosTodos = self.env['contactos']
-        
-        # id_needed = wt.search([('field1', '=', 'value')]).id
-        # new = wt.browse(id_needed)
-        # list = [new.field1, new.field2, new.field3]
-        if self.cliente :
-            self.razonPrueba = self.cliente.razonSocial
-            #razonPrueba = self.cliente.razonSocial
-            #_logger.info("Estamos aquí  "+str(self.razonPrueba))
-            busca = str(self.cliente.razonSocial)
-            for valor in valores:
-                llave,valor  = valor
-                if(busca == llave):
-                    self.razonSocial = valor
-            self.direccion = self.cliente.contact_address
-            self.ejecutivoDeCuenta = self.cliente.x_studio_ejecutivo
-            self.vendedor = self.cliente.x_studio_vendedor
-            self.rfcCliente = self.cliente.vat
-
-    @api.onchange('fechaDeFinDeContrato')
-    @api.multi
-    def expiracionServicios(self):
-
-        if self.fechaDeFinDeContrato:
-            for record in self:
-                fecha = str(record.fechaDeFinDeContrato).split(' ')[0]
-                converted_date = datetime.datetime.strptime(fecha, '%Y-%m-%d').date()
-                fechaCompara = (datetime.date.today() - converted_date).days
-                if fechaCompara > 0 : 
-                    #_logger.info("-------Logger de OSWALDO "+str(record.mapped('servicio.servActivo')))
-                    for elemento in record.mapped('servicio'):
-                        #_logger.info("-------Logger de OSWALDO*****"+str(elemento.servActivo))
-                        if elemento:
-                            elemento.servActivo = False
-    #    for record in self:       
-    #         if record.contrato:
-    #             _logger.info("-------Logger de OSWALDO "+str(record.contrato.name))
-
-    #             #Comparamos la fecha de hoy con la fecha de fin de contrato
-    #             #Aqui obtenemos todos los serviciós
-    #             if fechaCompara > 0:
-    #                 if record.servicio :
-    #                     for servicio in record.servicio: 
-    #                         servicio.servActivo = False
-        #La siguiente funcion verifica que si la fecha de fin de servicio este se desactiva 
-    #fechaDeInicioDeContrato
-    #fechaDeFinDeContrato
-    @api.onchange('fechaDeFinDeContrato')
-    def verificaFechaFinMayor(self):
-        message = ""
-        mess = {}
-            # fechaDeFinDeServicio      fechaDeInicioDeServicio
-        if self.fechaDeFinDeContrato:
-            fechaFin = str(self.fechaDeFinDeContrato).split(' ')[0]
-            converted_date_Fin = datetime.datetime.strptime(fechaFin, '%Y-%m-%d').date()
-            
-
-            fechaIni = str(self.fechaDeInicioDeContrato).split(' ')[0]
-            converted_date_Ini = datetime.datetime.strptime(fechaIni, '%Y-%m-%d').date()
-
-
-            diasAtraso = (converted_date_Fin- converted_date_Ini).days
-            
-            if diasAtraso < 0:
-                raise exceptions.ValidationError("Fecha de inicio de contrato tiene que ser menor a fecha de fin de contrato ")
-                message = ("Fecha de inicio de contrato tiene que ser menor a fecha de fin de contrato")
-                mess = {
-                        'title': _('Error de fecha'),
-                        'message' : message
-                    }
-                return {'warning': mess}
-
-class cliente_contratos(models.Model):
-    _inherit = 'res.partner'
-    contrato = fields.One2many('contrato', 'cliente', string="Contratos")
-    
-
-class ejecutivo_de_cuenta_contratos(models.Model):
-    _inherit = 'hr.employee'
-    contratoEjecutivoDeCuenta = fields.One2many('contrato', 'ejecutivoDeCuenta', string="Contratos asociados al ejecutivo de cuenta")
-    contratoVendedor = fields.One2many('contrato', 'vendedor', string="Contratos asociados al vendedor")
-
-
-#Valores para impresión de factura
-class Valores_Impresion(models.Model):
-    _name = 'servicios.valores'
-    _description = 'Valores para impresión de factura'
-    servicio = fields.Many2one('servicio', string = "Servicio", track_visibility='onchange')
-
-    #En la vista de techra así estan clasificados los campos 
-    campo       = fields.Char()
-    valor       = fields.Char()
-    selection   = fields.Boolean(default=False)
-
-
-
-class penalizaciones(models.Model):
-    _name = "penalizaciones"
-    _description = 'penalizaciones GNSYS'
-   
-    #name = fields.Char(string="Nombre")
-    contrato = fields.Many2one('contrato', string="Contrato")
-   
-    plazoIni = fields.Selection(get_plazo(), string='Plazo Inicio',default=1)
-    plazoFinal = fields.Selection(get_plazo(), string='Plazo Final',default=12)
-    porcentaje = fields.Float()
-    total=fields.Float(string='Penalización a pagar por concepto de cancelación')
-    totalResidual=fields.Float(string='% Residual a pagar, adicional a la penalización')
-    meses=fields.Integer(string='Meses')
-   
-   
-   
-   
-    @api.onchange('porcentaje')    
-    def calcula(self):
-        total=0.0
-        #raise exceptions.ValidationError("debes de poner un rango mayor a 29 si el método de pago es ppd ")
-        if len(self.contrato.servicio)>0:
-            if self.contrato.cliente:
-                if len(self.contrato.cliente.invoice_ids)>0:
-                    for fac in self.contrato.cliente.invoice_ids:
-                        if fac.state=='paid' or fac.state=='open':
-                            total=fac.amount_untaxed_invoice_signed+total                            
-                    if self.meses!=0:
-                        self.total=(total/int(self.contrato.x_studio_meses_contratados))*self.meses
-                    else:
-                        self.total=0    
-                    self.totalResidual=(total/(int(self.contrato.x_studio_meses_contratados)))*(self.porcentaje)                                                
-   
-    @api.onchange('plazoFinal')    
-    def calcula_porcentaje(self):                
-        if self.plazoIni and self.plazoFinal :            
-            if self.plazoIni >0 and self.plazoFinal<=12:            
-                self.porcentaje=0.75
-                self.meses=2
-            if self.plazoIni >12 and self.plazoFinal<=24:                
-                self.porcentaje=0.55              
-                self.meses=2
-            if self.plazoIni >24 and self.plazoFinal<=30:
-                self.porcentaje=0.25              
-                self.meses=1
-            if self.plazoIni >30 and self.plazoFinal<=35:                
-                self.porcentaje=0.15
-                self.meses=0
