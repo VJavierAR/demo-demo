@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "servicios",
+    'name': "contrato",
 
     'summary': """
         Servicios tipo""",
