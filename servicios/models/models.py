@@ -179,7 +179,7 @@ class contratos(models.Model):
     _description = 'Contratos GNSYS'
     
     name = fields.Char(string="Nombre")
-    servicio = fields.One2many('servicios', 'contrato',string="Servicio")
+    #servicio = fields.One2many('servicios', 'contrato',string="Servicio")
     ci = fields.Binary(string="carta de intención")
     c = fields.Binary(string="contrato")
     ac = fields.Binary(string="Acta constitutiva")
@@ -258,7 +258,7 @@ class contratos(models.Model):
     
 
     #Valores para impresión de factura
-    valoresImpresion   = fields.One2many('servicios.valores', 'servicio', string = "Valores para impresión de factura",track_visibility='onchange')
+    #valoresImpresion   = fields.One2many('servicios.valores', 'servicio', string = "Valores para impresión de factura",track_visibility='onchange')
     #razonPrueba  = fields.Many2one('contactos', string="Contactos")
 
     pago    = fields.Selection([("ANTICIPADO","Anticipado"),("VENCIDO","Vencido"),("MIXOT","Mixto")],string="Pago",track_visibility='onchange')

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "servicios_gnsys",
+    'name': "servicios",
 
     'summary': """
-        Servicios tipo gnsys""",
+        Servicios tipo""",
 
     'description': """
-        Modelo de servicios tipo gnsys
+        Modelo de servicios tipo g
     """,
 
-    'author': "GNSYS",
+    'author': "Gerardo",
     'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
