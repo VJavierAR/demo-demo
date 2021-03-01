@@ -6,7 +6,7 @@
         Servicios tipo""",
 
     'description': """
-        Modelo de servicios tipo g
+        Modelo de servicios tipo 
     """,
 
     'author': "Gerardo",
@@ -16,12 +16,12 @@
     # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-  'version': '12.0.1.0.0',
+  'version': '14.0.1.0.0',
     # any module necessary for this one to work correctly
     'depends': [
-        'stock',
-        'sale',
-        'product',
+      
+      
+      
         'mail'
     ],
 

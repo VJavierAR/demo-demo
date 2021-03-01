@@ -17,7 +17,7 @@ def get_plazo():
 class servicios_gnsys(models.Model):
     _name = 'servicios'
     _inherit = 'mail.thread'
-    _description = 'Servicios GNSYS'
+    _description = 'Servicios'
     """
     name=fields.Char('Nombre')
     productos = fields.One2many('product.product', 'servicio', string="Productos")
@@ -176,7 +176,7 @@ class equipo_series(models.Model):
 """
 class contratos(models.Model):
     _name = "contrato"
-    _description = 'Contratos GNSYS'
+    _description = 'Contratos'
     
     name = fields.Char(string="Nombre")
     #servicio = fields.One2many('servicios', 'contrato',string="Servicio")
