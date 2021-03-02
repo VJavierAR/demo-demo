@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 def get_plazo():
     year_list = []
     for i in range(1, 100):
-       year_list.append((i, str(i)))
+       year_list.append((str(i), str(i)))
     return year_list
 
 class contratos(models.Model):
