@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from odoo import _, models, fields, api, tools
 from email.utils import formataddr
 from odoo.exceptions import UserError
